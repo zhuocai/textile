@@ -340,7 +340,7 @@ if __name__ == "__main__":
         "--method",
         required=False,
         metavar="",
-        choices=["ssim", "l2"],
+        choices=["ssim", "l2", 'cai_l2'],
         default="ssim",
         help="method for generating resmaps: 'ssim' or 'l2'",
     )
