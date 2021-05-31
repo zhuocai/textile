@@ -154,7 +154,7 @@ class AutoEncoder:
 
         # set metrics to monitor training
         if loss =='cai_ls':
-            metrics = [metrics.cai_l2_metric()]
+            self.metrics = [metrics.cai_l2_metric()]
         elif color_mode == "grayscale":
             self.metrics = [metrics.ssim_metric(self.dynamic_range)]
             self.hist_keys = ("loss", "val_loss", "ssim", "val_ssim")

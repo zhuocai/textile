@@ -241,4 +241,4 @@ if __name__ == "__main__":
 # python3 train.py -d mvtec/hazelnut -a resnetCAE -b 8 -l mssim -c rgb --inspect
 # python3 train.py -d mvtec/pill -a inceptionCAE -b 8 -l mssim -c rgb --inspect
 # python3 train.py -d mvtec/carpet -a mvtecCAE -b 8 -l ssim -c grayscale --inspect
-# python3 train.py -d mvtec/carpet -a baselineCAE -b 8 -l ssim -c grayscale --inspect
+# python3 train.py -d mvtec/carpet -a baselineCAE -b 8 -l cai_l2 -c grayscale --inspect
