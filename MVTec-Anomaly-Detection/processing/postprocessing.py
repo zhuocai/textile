@@ -31,18 +31,18 @@ THRESH_STEP_UINT8_L2 = 1
 
 class TensorImages:
     def __init__(
-        self,
-        imgs_input,
-        imgs_pred,
-        vmin,
-        vmax,
-        method,
-        dtype="float64",
-        filenames=None,
+            self,
+            imgs_input,
+            imgs_pred,
+            vmin,
+            vmax,
+            method,
+            dtype="float64",
+            filenames=None,
     ):
         assert imgs_input.ndim == imgs_pred.ndim == 4
         assert dtype in ["float64", "uint8"]
-        assert method in ["l2", "ssim", "mssim"]
+        assert method in ["l2", "ssim", "mssim", 'cai_l2']
         self.method = method
         self.dtype = dtype
         # pixel min and max values of input and reconstruction (pred)
@@ -53,6 +53,11 @@ class TensorImages:
         self.filenames = filenames
 
         # if grayscale, reduce dim to (samples x length x width)
+        if method == 'cai_l2':
+            imgs_1 = imgs_pred[0]
+            imgs_2 = imgs_pred[1]
+            imgs_input = imgs_1
+            imgs_pred = imgs_2
         if imgs_input.shape[-1] == 1:
             imgs_input = imgs_input[:, :, :, 0]
             imgs_pred = imgs_pred[:, :, :, 0]
@@ -78,7 +83,7 @@ class TensorImages:
             if method in ["ssim", "mssim"]:
                 self.thresh_min = THRESH_MIN_FLOAT_SSIM
                 self.thresh_step = THRESH_STEP_FLOAT_SSIM
-            elif method == "l2":
+            elif method in ["l2", 'cai_l2']:
                 self.thresh_min = THRESH_MIN_FLOAT_L2
                 self.thresh_step = THRESH_STEP_FLOAT_L2
 
@@ -88,7 +93,7 @@ class TensorImages:
             if method in ["ssim", "mssim"]:
                 self.thresh_min = THRESH_MIN_UINT8_SSIM
                 self.thresh_step = THRESH_STEP_UINT8_SSIM
-            elif method == "l2":
+            elif method in ["l2", 'cai_l2']:
                 self.thresh_min = THRESH_MIN_UINT8_L2
                 self.thresh_step = THRESH_STEP_UINT8_L2
 
@@ -207,6 +212,8 @@ def calculate_resmaps(imgs_input, imgs_pred, method, dtype="float64"):
     # calculate remaps
     if method == "l2":
         scores, resmaps = resmaps_l2(imgs_input_gray, imgs_pred_gray)
+    elif method == 'cai_l2':
+        scores, resmaps = resmaps_cai_l2(imgs_input, imgs_pred)
     elif method in ["ssim", "mssim"]:
         scores, resmaps = resmaps_ssim(imgs_input_gray, imgs_pred_gray)
     if dtype == "uint8":
@@ -239,6 +246,12 @@ def resmaps_ssim(imgs_input, imgs_pred):
 def resmaps_l2(imgs_input, imgs_pred):
     resmaps = (imgs_input - imgs_pred) ** 2
     scores = list(np.sqrt(np.sum(resmaps, axis=0)).flatten())
+    return scores, resmaps
+
+
+def resmaps_cai_l2(imgs_input, imgs_pred):
+    resmaps = (imgs_input - imgs_pred) ** 2
+    scores = list(np.sqrt(np.sum(np.sum(resmaps, axis=0), axis=-1)).flatten())
     return scores, resmaps
 
 
