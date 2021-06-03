@@ -117,48 +117,57 @@ class baselineCAE(nn.Module):
         self.d_layer7 = nn.Sequential(
             nn.Conv2d(32, channels, kernel_size=(3, 3), padding=1),
             nn.BatchNorm2d(channels),
+            # nn.Tanh(), 
             nn.Sigmoid(),
         )
 
     def forward(self, x: Tensor):
         n = x.size(0)
-        print(x.size())
+        # print(x.size())
         x = self.layer1(x)
-        print('layer 1', x.size())
+        # print('layer 1', x.size())
         x1 = x.clone()
         x = self.layer2(x)
-        print('layer 2', x.size())
+        # print('layer 2', x.size())
         x = self.layer3(x)
 
-        print('layer 3', x.size())
+        # print('layer 3', x.size())
         x = self.layer4(x)
-        print('layer 4', x.size())
+        # print('layer 4', x.size())
         x = self.layer5(x)
-        print('layer 5', x.size())
+        # print('layer 5', x.size())
+        # print('x require grad', x.requires_grad)
         x = self.layer6(x)
 
-        print('hid size', x.size())
+        # print('hid size', x.size())
         x = x.view(n, -1)
 
         x = self.flatten(x)
 
         x = x.view(n, -1, 4, 4)
         x = self.d_layer1(x)
-        print('layer 1', x.size())
+        #print('layer 1', x.size())
+        #print('x require grad', x.requires_grad)
         x = self.d_layer2(x)
-        print('layer 2', x.size())
+        #print('layer 2', x.size())
+        #print('x require grad', x.requires_grad)
         x = self.d_layer3(x)
-        print('layer 3', x.size())
+        #print('layer 3', x.size())
+        #print('x require grad', x.requires_grad)
         x = self.d_layer4(x)
-        print('layer 4', x.size())
+        #print('layer 4', x.size())
+        #print('x require grad', x.requires_grad)
         x = self.d_layer5(x)
-        print('layer 5', x.size())
+        #print('layer 5', x.size())
+        #print('x require grad', x.requires_grad)
         x2 = x.clone()
         x = self.d_layer6(x)
-        print('layer 6', x.size())
+        #print('layer 6', x.size())
+        #print('x require grad', x.requires_grad)
         x = self.d_layer7(x)
-        print('layer 7', x.size())
-
+        #print('layer 7', x.size())
+        #print('x require grad', x.requires_grad)
+        x = (x-0.5) * 2
         outputs = {'e': x1,
                    'd': x2,
                    'o': x}
