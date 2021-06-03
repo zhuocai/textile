@@ -54,10 +54,7 @@ class TensorImages:
 
         # if grayscale, reduce dim to (samples x length x width)
         if method == 'cai_l2':
-            imgs_1 = imgs_pred[0]
-            imgs_2 = imgs_pred[1]
-            imgs_input = imgs_1
-            imgs_pred = imgs_2
+            imgs_input = imgs_pred
         if imgs_input.shape[-1] == 1:
             imgs_input = imgs_input[:, :, :, 0]
             imgs_pred = imgs_pred[:, :, :, 0]
@@ -250,7 +247,7 @@ def resmaps_l2(imgs_input, imgs_pred):
 
 
 def resmaps_cai_l2(imgs_input, imgs_pred):
-    resmaps = (imgs_input - imgs_pred) ** 2
+    resmaps = (imgs_pred) ** 2
     scores = list(np.sqrt(np.sum(np.sum(resmaps, axis=0), axis=-1)).flatten())
     return scores, resmaps
 

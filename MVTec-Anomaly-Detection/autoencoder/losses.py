@@ -25,12 +25,12 @@ def mssim_loss(dynamic_range):
 
 def l2_loss(imgs_true, imgs_pred):
     # return 2 * tf.nn.l2_loss(imgs_true - imgs_pred)
-    return tf.nn.l2_loss(imgs_true - imgs_pred)
+    return tf.nn.l2_loss(imgs_pred)
 
 
 def cai_l2_loss(imgs_true, output):
-    x1, x2 = output
-    return tf.nn.l2_loss(x1 - x2)
+    # x1, x2 = output
+    return tf.nn.l2_loss(output)
 
 
 def correlation(x, y):

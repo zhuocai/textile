@@ -55,10 +55,8 @@ def build_model(color_mode):
     # layer2
     # added ---------------------------------------------------------------------------
     x = Conv2D(32, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-6))(x)
-
-    x1 = x
-
     x = BatchNormalization()(x)
+    x1 = x
     x = LeakyReLU(alpha=0.1)(x)
     x = MaxPooling2D((2, 2), padding="same")(x)
     # ---------------------------------------------------------------------------------
@@ -124,15 +122,15 @@ def build_model(color_mode):
     # ---------------------------------------------------------------------------------
 
     x = Conv2D(32, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-6))(x)
-
-    x2 = x
     x = BatchNormalization()(x)
+    #x2 = x
     x = LeakyReLU(alpha=0.1)(x)
     x = UpSampling2D((2, 2))(x)
 
     ## added ---------------------------------------------------------------------------
     x = Conv2D(32, (3, 3), padding="same", kernel_regularizer=regularizers.l2(1e-6))(x)
     x = BatchNormalization()(x)
+    x2 = x
     x = LeakyReLU(alpha=0.1)(x)
     x = UpSampling2D((2, 2))(x)
     # ---------------------------------------------------------------------------------
@@ -144,7 +142,7 @@ def build_model(color_mode):
     x = Activation("sigmoid")(x)
     decoded = x
 
-    output = (x1, x2)
+    output = x1 - x2
     # model
     # autoencoder = Model(input_img, decoded)
     autoencoder = Model(input_img, output)
