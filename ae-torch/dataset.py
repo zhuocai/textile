@@ -10,6 +10,7 @@ folder = '~/data/mvtec/%s' % split
 
 def get_trainval_loader():
     transform_train = transforms.Compose([
+        transforms.Resize(256), 
         transforms.RandomCrop(256, padding=16),
         transforms.RandomRotation(15),
         transforms.ToTensor(),
@@ -29,7 +30,8 @@ def get_trainval_loader():
 
 def get_test_loader():
     transform_test = transforms.Compose([
-        transforms.RandomCrop(256),
+        transforms.Resize(256), 
+       
         transforms.ToTensor(),
         transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
