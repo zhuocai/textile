@@ -20,6 +20,6 @@ def mssim_metric(dynamic_range):
 
 def cai_l2_metric():
     def l2_metric(imgs_true, output):
-        x1, x2 = output
-        return tf.math.reduce_sum(tf.square(x1 - x2))
+        
+        return tf.math.reduce_sum(tf.square(output))
     return l2_metric

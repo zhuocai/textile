@@ -149,11 +149,11 @@ class AutoEncoder:
             self.loss_function = losses.mssim_loss(self.dynamic_range)
         elif loss == "l2":
             self.loss_function = losses.l2_loss
-        elif loss == 'cai_ls':
+        elif loss == 'cai_l2':
             self.loss_function = losses.cai_l2_loss
 
         # set metrics to monitor training
-        if loss =='cai_ls':
+        if loss =='cai_l2':
             self.metrics = [metrics.cai_l2_metric()]
         elif color_mode == "grayscale":
             self.metrics = [metrics.ssim_metric(self.dynamic_range)]
@@ -258,7 +258,7 @@ class AutoEncoder:
         # fit model using Cyclical Learning Rates
         self.hist = self.learner.autofit(
             lr=lr_opt,
-            epochs=None,
+            epochs=100,
             early_stopping=self.early_stopping,
             reduce_on_plateau=self.reduce_on_plateau,
             reduce_factor=2,
