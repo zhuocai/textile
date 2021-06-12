@@ -16,7 +16,7 @@ class baselineCAE(nn.Module):
 
         img_dim = (*SHAPE, channels)
 
-        encoding_dim = 64
+        encoding_dim = 256
 
         self.layer1 = nn.Sequential(
             nn.Conv2d(in_channels=channels, out_channels=32, kernel_size=(3, 3),
@@ -70,7 +70,7 @@ class baselineCAE(nn.Module):
             nn.LeakyReLU(negative_slope=0.1)
         )
 
-        hid_channel = 4  # know later: encoding_dim = 4 * 4 * hid_channel
+        hid_channel = int(encoding_dim/16)  # know later: encoding_dim = 4 * 4 * hid_channel
         # decoder
         self.d_layer1 = nn.Sequential(
             nn.Conv2d(hid_channel, 128, kernel_size=(3, 3), padding=1),

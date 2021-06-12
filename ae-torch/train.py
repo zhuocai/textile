@@ -11,7 +11,7 @@ from sklearn.metrics import roc_auc_score
 color_mode = 'gray_scale'
 lr = 0.1
 device = 'cuda'
-epoch = 10
+epoch = 3
 tmax = epoch
 
 
