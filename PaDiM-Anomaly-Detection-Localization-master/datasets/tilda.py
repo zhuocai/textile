@@ -13,7 +13,16 @@ root_path = 'tilda/ncd1/c2/r2/images'
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
-run_cases = [root_path]
+run_cases = [
+#'tilda/ncd1/c1/r1/images', 
+#'tilda/ncd1/c1/r3/images', 
+#'tilda/ncd1/c2/r2/images', 
+#'tilda/ncd1/c2/r3/images', 
+'tilda/ncd2/c3/r1/images', 
+'tilda/ncd2/c3/r3/images', 
+'tilda/ncd2/c4/r1/images',  
+'tilda/ncd2/c4/r3/images'
+]
 
 
 def get_dataset(path, is_train=True,
