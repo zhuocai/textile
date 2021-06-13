@@ -70,9 +70,9 @@ def main():
     model.layer3[-1].register_forward_hook(hook)
 
     os.makedirs(os.path.join(args.save_path, 'temp_%s' % args.arch), exist_ok=True)
-    fig, ax = plt.subplots(1, 2, figsize=(20, 10))
-    fig_img_rocauc = ax[0]
-    fig_pixel_rocauc = ax[1]
+    # fig, ax = plt.subplots(1, 2, figsize=(20, 10))
+    # fig_img_rocauc = ax[0]
+    # fig_pixel_rocauc = ax[1]
 
     total_roc_auc = []
     total_pixel_roc_auc = []
@@ -188,8 +188,14 @@ def main():
         img_roc_auc = roc_auc_score(gt_list, img_scores)
         total_roc_auc.append(img_roc_auc)
         print('image ROCAUC: %.3f' % (img_roc_auc))
-        fig_img_rocauc.plot(fpr, tpr, label='%s img_ROCAUC: %.3f' % (class_name, img_roc_auc))
-        
+        # fig_img_rocauc.plot(fpr, tpr, label='%s img_ROCAUC: %.3f' % (class_name, img_roc_auc))
+        plt.figure(figsize=(10, 10))
+        plt.plot(fpr, tpr, label='%s img_ROCAUC: %.3f' % (class_name, img_roc_auc))
+        plt.xlabel('False Positive rate')
+        plt.ylabel('True Positive rate')
+        plt.title('%s ROC Curve' % class_name)
+        plt.savefig(os.path.join(args.save_path, '%s_roc_curve.png' % class_name), dpi=170)
+
         # get optimal threshold
         gt_mask = np.asarray(gt_mask_list)
         precision, recall, thresholds = precision_recall_curve(gt_mask.flatten(), scores.flatten())
@@ -204,21 +210,21 @@ def main():
         total_pixel_roc_auc.append(per_pixel_rocauc)
         print('pixel ROCAUC: %.3f' % (per_pixel_rocauc))
 
-        fig_pixel_rocauc.plot(fpr, tpr, label='%s ROCAUC: %.3f' % (class_name, per_pixel_rocauc))
+        # fig_pixel_rocauc.plot(fpr, tpr, label='%s ROCAUC: %.3f' % (class_name, per_pixel_rocauc))
         save_dir = args.save_path + '/' + f'pictures_{args.arch}'
         os.makedirs(save_dir, exist_ok=True)
-        plot_fig(test_imgs, scores, gt_mask_list, threshold, save_dir, class_name)
+        # plot_fig(test_imgs, scores, gt_mask_list, threshold, save_dir, class_name)
 
     print('Average ROCAUC: %.3f' % np.mean(total_roc_auc))
-    fig_img_rocauc.title.set_text('Average image ROCAUC: %.3f' % np.mean(total_roc_auc))
-    fig_img_rocauc.legend(loc="lower right")
+    # fig_img_rocauc.title.set_text('Average image ROCAUC: %.3f' % np.mean(total_roc_auc))
+    # fig_img_rocauc.legend(loc="lower right")
 
     print('Average pixel ROCUAC: %.3f' % np.mean(total_pixel_roc_auc))
-    fig_pixel_rocauc.title.set_text('Average pixel ROCAUC: %.3f' % np.mean(total_pixel_roc_auc))
-    fig_pixel_rocauc.legend(loc="lower right")
+    # fig_pixel_rocauc.title.set_text('Average pixel ROCAUC: %.3f' % np.mean(total_pixel_roc_auc))
+    # fig_pixel_rocauc.legend(loc="lower right")
 
-    fig.tight_layout()
-    fig.savefig(os.path.join(args.save_path, 'roc_curve.png'), dpi=100)
+    # fig.tight_layout()
+    # fig.savefig(os.path.join(args.save_path, 'roc_curve.png'), dpi=100)
 
 
 def plot_fig(test_img, scores, gts, threshold, save_dir, class_name):
