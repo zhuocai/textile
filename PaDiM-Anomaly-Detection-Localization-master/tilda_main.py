@@ -137,7 +137,7 @@ def main():
         test_imgs = []
 
         # extract test set features
-        for (x, y) in tqdm(test_dataloader, '| feature extraction | test | %s |' % class_name):
+        for (x, y) in tqdm(test_dataloader, '| feature extraction | test | %s |' % split):
             test_imgs.extend(x.cpu().detach().numpy())
             gt_list.extend(y.cpu().detach().numpy())
             # gt_mask_list.extend(mask.cpu().detach().numpy())

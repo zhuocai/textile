@@ -25,5 +25,6 @@ def get_dataset(path, is_train=True,
         T.Normalize(mean=[0.485, 0.456, 0.406],
                     std=[0.229, 0.224, 0.225])
     ])
-    dset = datasets.ImageFolder(path, transform=transform)
-    return dset
+    train_dset = datasets.ImageFolder(osp.join(path, 'train'), transform=transform)
+    test_dset = datasets.ImageFolder(osp.join(path,'test'), transform=transform)
+    return train_dset, test_dset
