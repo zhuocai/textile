@@ -1,0 +1,29 @@
+import os
+import os.path as osp
+
+from PIL import Image
+from tqdm import tqdm
+
+import torch
+from torch.utils.data import Dataset
+from torchvision import transforms as T
+from torchvision import datasets
+
+root_path = 'tilda/ncd1/c1/r1/images'
+mean = [0.485, 0.456, 0.406]
+std = [0.229, 0.224, 0.225]
+
+run_cases = [root_path]
+
+
+def get_dataset(path, is_train=True,
+                resize=256, cropsize=224):
+    transform = T.Compose([
+        T.Resize(resize, Image.ANTIALIAS),
+        T.CenterCrop(cropsize),
+        T.ToTensor(),
+        T.Normalize(mean=[0.485, 0.456, 0.406],
+                    std=[0.229, 0.224, 0.225])
+    ])
+    dset = datasets.ImageFolder(path, transform=transform)
+    return dset
