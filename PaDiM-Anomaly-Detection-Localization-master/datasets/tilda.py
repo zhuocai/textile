@@ -9,7 +9,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms as T
 from torchvision import datasets
 
-root_path = 'tilda/ncd1/c1/r1/images'
+root_path = 'tilda/ncd1/c2/r2/images'
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 

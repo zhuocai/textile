@@ -139,7 +139,9 @@ def main():
         # extract test set features
         for (x, y) in tqdm(test_dataloader, '| feature extraction | test | %s |' % split):
             test_imgs.extend(x.cpu().detach().numpy())
-            gt_list.extend(y.cpu().detach().numpy())
+            y = y.cpu().detach().numpy()
+            y[y>1]=1
+            gt_list.extend(y)
             # gt_mask_list.extend(mask.cpu().detach().numpy())
             # model prediction
             with torch.no_grad():
